@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1e46">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NK Smart Buyer">
+<meta name="description" content="NK Smart Buyer — حاسبة القدرة الشرائية العقارية">
+<link rel="icon" type="image/svg+xml" href="app-icon.svg">
+<link rel="apple-touch-icon" href="app-icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<title>NK Smart Buyer | حاسبة القدرة الشرائية</title>
+<style>
+:root{--navy:#0b1e46;--navy2:#132f63;--blue:#1762ed;--blue2:#347dff;--pale:#eaf2ff;--ink:#15284c;--muted:#748198;--line:#dce4f0;--bg:#f3f6fb;--white:#fff;--green:#087b55;--shadow:0 12px 34px rgba(15,42,91,.08)}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;color:var(--ink);background:radial-gradient(ellipse at 95% 0%,#e3edff 0,transparent 32%),var(--bg);-webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+button{touch-action:manipulation}
+.app{max-width:780px;margin:auto;padding:16px 14px calc(26px + env(safe-area-inset-bottom))}
+.hero{position:relative;overflow:hidden;border-radius:25px;padding:22px 20px 20px;color:#fff;background:linear-gradient(135deg,#091a3e 0%,#102d62 58%,#1b56bc 100%);box-shadow:0 16px 34px rgba(11,30,70,.2)}
+.hero:before{content:"";position:absolute;width:220px;height:220px;border:1px solid rgba(255,255,255,.12);border-radius:50%;left:-80px;top:-120px;box-shadow:0 0 0 22px rgba(255,255,255,.025),0 0 0 48px rgba(255,255,255,.02)}
+.brand-row{position:relative;display:flex;align-items:center;gap:13px}
+.app-icon{width:58px;height:58px;flex:0 0 58px;border-radius:18px;background:linear-gradient(145deg,#fff,#dbe8ff);display:grid;place-items:center;box-shadow:0 7px 18px #0002}
+.app-icon svg{width:44px;height:44px}
+.brand-name{font-size:23px;font-weight:850;letter-spacing:-.5px;line-height:1.15}
+.brand-kicker{font-size:11px;letter-spacing:2px;color:#c7d8ff;margin-top:5px;direction:ltr;text-align:right}
+.hero-copy{position:relative;margin:17px 0 0;font-size:14px;line-height:1.75;color:#e0eaff;max-width:520px}
+.hero-tags{position:relative;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hero-tag{border:1px solid #ffffff28;background:#ffffff12;color:#edf4ff;border-radius:30px;padding:7px 10px;font-size:11px;display:flex;align-items:center;gap:6px}
+.hero-tag svg{width:14px;height:14px}
+.card{background:rgba(255,255,255,.96);border:1px solid #e4eaf3;border-radius:21px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+.section-head{display:flex;align-items:center;gap:10px;margin:0 0 18px}
+.step{width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:11px;background:var(--pale);color:var(--blue);font-size:14px;font-weight:850}
+h2{font-size:17px;margin:0;font-weight:850;color:var(--navy)}
+.section-sub{font-size:12px;color:var(--muted);margin:-9px 0 18px;line-height:1.7}
+.field{margin:0 0 21px}
+.field:last-child{margin-bottom:0}
+label.field-label{display:block;font-size:13px;font-weight:750;color:#4e5d77;margin:0 0 10px}
+.quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.choice{min-width:0;border:1.5px solid var(--line);background:#fff;border-radius:13px;min-height:51px;padding:10px 7px;color:#1b2e52;font-size:14px;font-weight:700;cursor:pointer;transition:border-color .14s,background .14s,transform .14s;overflow-wrap:anywhere}
+.choice:active{transform:scale(.985)}
+.choice.active{border-color:var(--blue);background:linear-gradient(180deg,#edf4ff,#e5eeff);color:#1557d4;box-shadow:inset 0 0 0 1px #1762ed12}
+.amount{direction:ltr}
+.custom-toggle{width:100%;border:1.5px dashed #cbd6e7;background:#f9fbff;border-radius:13px;min-height:47px;padding:10px 12px;color:#5d6d86;text-align:center;font-size:13px;font-weight:650;margin-top:9px;cursor:pointer}
+.custom-toggle span{color:var(--blue);font-weight:850;margin-left:5px}
+.custom-panel{display:none;margin-top:9px}
+.custom-panel.show{display:block}
+input[type=text],input[type=number]{width:100%;border:1.5px solid #d6dfec;border-radius:13px;padding:13px 14px;font-size:16px;color:var(--ink);background:#fff;min-height:50px;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1762ed16}
+input.amount-input{direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.radio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.radio-card{position:relative;display:flex;align-items:center;gap:9px;border:1.5px solid var(--line);border-radius:13px;padding:12px 11px;min-height:50px;background:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.radio-card:has(input:checked){border-color:var(--blue);background:var(--pale);color:#1557d4}
+.radio-card input{accent-color:var(--blue);width:17px;height:17px;margin:0;flex-shrink:0}
+.duration-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.duration-grid .choice{font-size:14px}
+.result-card{padding:0;overflow:hidden}
+.result-top{background:linear-gradient(140deg,#0b1e46,#153d82 70%,#1a61da);padding:21px 19px;color:#fff;position:relative;overflow:hidden}
+.result-top:after{content:"";position:absolute;left:-42px;top:-75px;width:180px;height:180px;border:1px solid #ffffff22;border-radius:50%;box-shadow:0 0 0 22px #ffffff08,0 0 0 46px #ffffff06}
+.result-label{position:relative;z-index:1;font-size:13px;color:#d5e4ff;font-weight:650;line-height:1.6}
+.result-total{position:relative;z-index:1;font-size:clamp(27px,7.4vw,39px);font-weight:900;letter-spacing:-.7px;color:#fff;direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:8px 0 0;font-variant-numeric:tabular-nums}
+.result-caption{position:relative;z-index:1;font-size:11px;color:#d1def5;line-height:1.7;margin-top:7px}
+.stats-wrap{padding:13px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{border:1px solid #e4eaf4;background:#fbfcff;border-radius:14px;padding:13px 12px;min-width:0}
+.stat-head{display:flex;align-items:center;gap:7px;font-size:11px;color:#6a7890;font-weight:700;line-height:1.5}
+.stat-icon{display:grid;place-items:center;width:27px;height:27px;flex:0 0 27px;border-radius:9px;background:#e8f1ff;color:var(--blue)}
+.stat-icon svg{width:15px;height:15px}
+.stat strong{display:block;margin-top:9px;font-size:clamp(15px,4.3vw,20px);color:var(--navy);direction:ltr;text-align:right;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.notice{margin:0 13px 13px;border:1px solid #d7e6ff;background:#f1f7ff;border-radius:14px;padding:13px;display:flex;align-items:flex-start;gap:9px}
+.notice-icon{width:25px;height:25px;display:grid;place-items:center;flex:0 0 25px;border-radius:50%;background:#d9e9ff;color:var(--blue);font-weight:900}
+.notice strong{font-size:12px;color:#174fae;display:block;margin:1px 0 4px}
+.notice p{font-size:11px;line-height:1.7;color:#5e6d83;margin:0}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 13px 15px}
+.action{border:1px solid #d6e0f0;background:#fff;color:#18325d;border-radius:12px;min-height:47px;padding:10px 8px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+.action.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.action svg{width:17px;height:17px}
+.toast{display:none;text-align:center;color:var(--green);font-size:12px;font-weight:700;padding:0 12px 13px}
+.toast.show{display:block}
+footer{text-align:center;color:#94a0b2;font-size:11px;line-height:1.7;padding:16px 8px 0}
+@media(min-width:600px){.app{padding:26px 22px 34px}.quick{grid-template-columns:repeat(4,minmax(0,1fr))}.card{padding:22px}.result-card{padding:0}.duration-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.radio-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.stats-wrap{padding:16px}.stat{padding:15px}.result-top{padding:25px}.actions{padding:0 16px 17px}.notice{margin:0 16px 15px}}
+@media(max-width:599px){.quick{grid-template-columns:repeat(2,minmax(0,1fr))}.choice{min-height:56px;font-size:15px}.field{margin-bottom:24px}.custom-toggle{min-height:51px}.radio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.duration-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="hero">
+  <div class="brand-row">
+    <div class="app-icon" aria-label="NK Smart Buyer icon">
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M7 49.5 31 30l26 19.5" stroke="#1762ed" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 46V30l17-14v30M34 45V24l9-7v28M47 45V34l7 5v6" stroke="#0b1e46" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M25 46V35h7v11" stroke="#1762ed" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M7 54h50" stroke="#1762ed" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">NK Smart Buyer</div>
+      <div class="brand-kicker">REAL ESTATE BUYING POWER</div>
+    </div>
+  </div>
+  <p class="hero-copy">احسب القدرة المالية للعميل في ثوانٍ، وحدد الميزانية المبدئية قبل البحث عن المشروع المناسب.</p>
+  <div class="hero-tags">
+    <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m13 2-3 9h7L8 22l3-9H4z"/></svg> سريع</div>
+    <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 12 4 4L19 6"/></svg> سهل الاستخدام</div>
+    <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2m4 0h2M8 15h2m4 0h2"/></svg> حساب فوري</div>
+  </div>
+</header>
+
+<section class="card">
+  <div class="section-head"><div class="step">01</div><h2>بيانات العميل</h2></div>
+  <p class="section-sub">اختار أقرب قيمة أو استخدم الإدخال اليدوي لو الرقم مختلف.</p>
+  <div class="field">
+    <label class="field-label">المقدم المتاح (جنيه)</label>
+    <div class="quick" id="downChoices">
+      <button class="choice amount active" type="button" data-value="1000000">1,000,000</button>
+      <button class="choice amount" type="button" data-value="500000">500,000</button>
+      <button class="choice amount" type="button" data-value="1500000">1,500,000</button>
+      <button class="choice amount" type="button" data-value="2000000">2,000,000</button>
+      <button class="choice amount" type="button" data-value="2500000">2,500,000</button>
+      <button class="choice amount" type="button" data-value="3000000">3,000,000</button>
+      <button class="choice amount" type="button" data-value="4000000">4,000,000</button>
+      <button class="choice amount" type="button" data-value="5000000">5,000,000</button>
+    </div>
+    <button class="custom-toggle" type="button" data-custom="down"><span>＋</span> إدخال مقدم يدوي</button>
+    <div class="custom-panel" id="downCustom"><input class="amount-input" id="downInput" type="text" inputmode="numeric" autocomplete="off" placeholder="اكتب قيمة المقدم بالجنيه"></div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">القسط الذي يستطيع العميل دفعه كل فترة (جنيه)</label>
+    <div class="quick" id="installmentChoices">
+      <button class="choice amount" type="button" data-value="50000">50,000</button>
+      <button class="choice amount" type="button" data-value="100000">100,000</button>
+      <button class="choice amount active" type="button" data-value="150000">150,000</button>
+      <button class="choice amount" type="button" data-value="200000">200,000</button>
+      <button class="choice amount" type="button" data-value="250000">250,000</button>
+      <button class="choice amount" type="button" data-value="300000">300,000</button>
+      <button class="choice amount" type="button" data-value="400000">400,000</button>
+      <button class="choice amount" type="button" data-value="500000">500,000</button>
+      <button class="choice amount" type="button" data-value="600000">600,000</button>
+      <button class="choice amount" type="button" data-value="750000">750,000</button>
+      <button class="choice amount" type="button" data-value="1000000">1M</button>
+      <button class="choice amount" type="button" data-value="2000000">2M</button>
+      <button class="choice amount" type="button" data-value="3000000">3M</button>
+      <button class="choice amount" type="button" data-value="4000000">4M</button>
+      <button class="choice amount" type="button" data-value="5000000">5M</button>
+      <button class="choice amount" type="button" data-value="6000000">6M</button>
+      <button class="choice amount" type="button" data-value="7000000">7M</button>
+      <button class="choice amount" type="button" data-value="8000000">8M</button>
+      <button class="choice amount" type="button" data-value="9000000">9M</button>
+      <button class="choice amount" type="button" data-value="10000000">10M</button>
+    </div>
+    <button class="custom-toggle" type="button" data-custom="installment"><span>＋</span> إدخال قيمة القسط يدوي</button>
+    <div class="custom-panel" id="installmentCustom"><input class="amount-input" id="installmentInput" type="text" inputmode="numeric" autocomplete="off" placeholder="اكتب قيمة القسط بالجنيه"></div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">دورية دفع القسط</label>
+    <div class="radio-grid">
+      <label class="radio-card"><input type="radio" name="frequency" value="1"> شهريًا</label>
+      <label class="radio-card"><input type="radio" name="frequency" value="3" checked> كل 3 شهور</label>
+      <label class="radio-card"><input type="radio" name="frequency" value="6"> كل 6 شهور</label>
+      <label class="radio-card"><input type="radio" name="frequency" value="12"> كل سنة</label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">مدة التقسيط</label>
+    <div class="duration-grid" id="durationChoices">
+      <button class="choice" type="button" data-value="5">5 سنين</button>
+      <button class="choice active" type="button" data-value="8">8 سنين</button>
+      <button class="choice" type="button" data-value="6">6 سنين</button>
+      <button class="choice" type="button" data-value="10">10 سنين</button>
+      <button class="choice" type="button" data-value="12">12 سنة</button>
+      <button class="choice" type="button" data-value="15">15 سنة</button>
+    </div>
+    <button class="custom-toggle" type="button" data-custom="years"><span>＋</span> إدخال مدة يدوي (من سنة إلى 15 سنة)</button>
+    <div class="custom-panel" id="yearsCustom"><input id="yearsInput" type="number" min="1" max="15" step="1" placeholder="المدة بالسنوات"></div>
+  </div>
+</section>
+
+<section class="card result-card">
+  <div class="result-top">
+    <div class="result-label">إجمالي القدرة المالية خلال مدة التقسيط</div>
+    <div class="result-total" id="total">EGP 5,800,000</div>
+    <div class="result-caption">المقدم المتاح + إجمالي الأقساط حسب البيانات التي أدخلتها.</div>
+  </div>
+  <div class="stats-wrap">
+    <div class="stat">
+      <div class="stat-head"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>المقدم المتاح</div>
+      <strong id="downResult">EGP 1,000,000</strong>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v5c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 10v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5"/></svg></span>إجمالي الأقساط</div>
+      <strong id="installmentTotal">EGP 4,800,000</strong>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2m4 0h2M8 15h2m4 0h2"/></svg></span>عدد الأقساط</div>
+      <strong id="count">32 قسطًا</strong>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>قيمة القسط</div>
+      <strong id="installmentResult">EGP 150,000</strong>
+    </div>
+  </div>
+  <div class="notice">
+    <div class="notice-icon">i</div>
+    <div><strong>ملاحظة مهمة</strong><p>النتيجة تقديرية لإجمالي ما يستطيع العميل دفعه، وليست سعر وحدة مؤكدًا. سعر الوحدة المناسب يعتمد على خطة السداد الفعلية وأي دفعات أو رسوم إضافية.</p></div>
+  </div>
+  <div class="actions">
+    <button class="action" id="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> نسخ الملخص</button>
+    <button class="action primary" id="share" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7 6.6 4.4"/></svg> مشاركة النتيجة</button>
+  </div>
+  <div class="toast" id="toast">تم نسخ الملخص بنجاح</div>
+</section>
+<footer>NK SMART BUYER · أداة مساعدة لحساب القدرة المالية الأولية</footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  const state = {down:1000000, installment:150000, frequency:3, years:8};
+  const $ = id => document.getElementById(id);
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const money = n => 'EGP ' + fmt(n);
+  const parseMoney = value => {
+    const clean = String(value ?? '').replace(/,/g,'').replace(/[^\d]/g,'');
+    if (!clean) return 0;
+    const n = Number(clean);
+    return Number.isSafeInteger(n) && n >= 0 ? n : 0;
+  };
+  const countPayments = () => Math.floor((state.years * 12) / state.frequency);
+  const summary = () => {
+    const count = countPayments();
+    const installmentsTotal = state.installment * count;
+    const total = state.down + installmentsTotal;
+    return {count, installmentsTotal, total};
+  };
+  function update() {
+    const s = summary();
+    $('total').textContent = money(s.total);
+    $('downResult').textContent = money(state.down);
+    $('installmentTotal').textContent = money(s.installmentsTotal);
+    $('count').textContent = fmt(s.count) + ' قسطًا';
+    $('installmentResult').textContent = money(state.installment);
+  }
+  function activate(containerId, value) {
+    $(containerId).querySelectorAll('[data-value]').forEach(button => {
+      button.classList.toggle('active', Number(button.dataset.value) === Number(value));
+    });
+  }
+  $('downChoices').addEventListener('click', event => {
+    const button = event.target.closest('[data-value]');
+    if (!button) return;
+    state.down = Number(button.dataset.value);
+    $('downCustom').classList.remove('show');
+    $('downInput').value = '';
+    activate('downChoices', state.down);
+    update();
+  });
+  $('installmentChoices').addEventListener('click', event => {
+    const button = event.target.closest('[data-value]');
+    if (!button) return;
+    state.installment = Number(button.dataset.value);
+    $('installmentCustom').classList.remove('show');
+    $('installmentInput').value = '';
+    activate('installmentChoices', state.installment);
+    update();
+  });
+  $('durationChoices').addEventListener('click', event => {
+    const button = event.target.closest('[data-value]');
+    if (!button) return;
+    state.years = Number(button.dataset.value);
+    $('yearsCustom').classList.remove('show');
+    $('yearsInput').value = '';
+    activate('durationChoices', state.years);
+    update();
+  });
+  document.querySelectorAll('[data-custom]').forEach(button => {
+    button.addEventListener('click', () => {
+      const key = button.dataset.custom;
+      const panel = $(key + 'Custom');
+      const open = !panel.classList.contains('show');
+      panel.classList.toggle('show', open);
+      if (open) {
+        const input = panel.querySelector('input');
+        input.value = key === 'down' ? (state.down || '') : key === 'installment' ? (state.installment || '') : state.years;
+        input.focus();
+      }
+    });
+  });
+  $('downInput').addEventListener('input', event => {
+    state.down = parseMoney(event.target.value);
+    activate('downChoices', -1);
+    update();
+  });
+  $('installmentInput').addEventListener('input', event => {
+    state.installment = parseMoney(event.target.value);
+    activate('installmentChoices', -1);
+    update();
+  });
+  $('yearsInput').addEventListener('input', event => {
+    const raw = event.target.value;
+    if (raw === '') return;
+    const n = Number(raw);
+    if (Number.isInteger(n) && n >= 1 && n <= 15) {
+      state.years = n;
+      activate('durationChoices', -1);
+      update();
+    }
+  });
+  document.querySelectorAll('input[name="frequency"]').forEach(input => {
+    input.addEventListener('change', () => {
+      state.frequency = Number(input.value);
+      update();
+    });
+  });
+  function makeSummary() {
+    const s = summary();
+    const frequencyLabel = {1:'شهريًا',3:'كل 3 شهور',6:'كل 6 شهور',12:'كل سنة'}[state.frequency];
+    return [
+      'NK Smart Buyer',
+      'المقدم المتاح: ' + fmt(state.down) + ' جنيه',
+      'قيمة القسط: ' + fmt(state.installment) + ' جنيه',
+      'دورية السداد: ' + frequencyLabel,
+      'مدة التقسيط: ' + state.years + ' سنة',
+      'عدد الأقساط: ' + fmt(s.count),
+      'إجمالي الأقساط: ' + fmt(s.installmentsTotal) + ' جنيه',
+      'إجمالي القدرة المالية: ' + fmt(s.total) + ' جنيه',
+      'ملاحظة: إجمالي القدرة المالية تقديري وليس سعر وحدة مؤكدًا.'
+    ].join('\n');
+  }
+  async function copySummary() {
+    const text = makeSummary();
+    try {
+      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+      else throw new Error('clipboard unavailable');
+      showToast('تم نسخ الملخص بنجاح');
+    } catch (_) {
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed'; area.style.opacity = '0';
+      document.body.appendChild(area); area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      showToast(ok ? 'تم نسخ الملخص بنجاح' : 'تعذر النسخ تلقائيًا — حاول مرة أخرى');
+    }
+  }
+  function showToast(message) {
+    $('toast').textContent = message;
+    $('toast').classList.add('show');
+    window.setTimeout(() => $('toast').classList.remove('show'), 2200);
+  }
+  $('copy').addEventListener('click', copySummary);
+  $('share').addEventListener('click', async () => {
+    const text = makeSummary();
+    if (navigator.share) {
+      try { await navigator.share({title:'NK Smart Buyer', text}); } catch (error) { if (error.name !== 'AbortError') copySummary(); }
+    } else {
+      copySummary();
+    }
+  });
+  update();
+})();
+</script>
+</body>
+</html>
